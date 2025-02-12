@@ -57,30 +57,26 @@ const DocumentEditor = () => {
 
     if (start === end) return; // No text selected
 
-    let newText = docContent;
+    // Toggle style state
     switch (style) {
       case 'bold':
         setEditorState(prev => ({ ...prev, isBold: !prev.isBold }));
-        newText = docContent.substring(0, start) + 
-                 `<strong>${selectedText}</strong>` +
-                 docContent.substring(end);
+        editor.style.fontWeight = editorState.isBold ? 'normal' : 'bold';
         break;
       case 'italic':
         setEditorState(prev => ({ ...prev, isItalic: !prev.isItalic }));
-        newText = docContent.substring(0, start) + 
-                 `<em>${selectedText}</em>` +
-                 docContent.substring(end);
+        editor.style.fontStyle = editorState.isItalic ? 'normal' : 'italic';
         break;
       case 'underline':
         setEditorState(prev => ({ ...prev, isUnderline: !prev.isUnderline }));
-        newText = docContent.substring(0, start) + 
-                 `<u>${selectedText}</u>` +
-                 docContent.substring(end);
+        editor.style.textDecoration = editorState.isUnderline ? 'none' : 'underline';
         break;
       default:
         break;
     }
-    setDocContent(newText);
+
+    // Keep the selection after applying style
+    editor.setSelectionRange(start, end);
     editor.focus();
   };
 
